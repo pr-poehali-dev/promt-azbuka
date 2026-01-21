@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -5,8 +6,11 @@ import Icon from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import SupportModal from "@/components/SupportModal";
 
 const Index = () => {
+  const [showSupportModal, setShowSupportModal] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const professions = [
     {
       letter: "А",
@@ -79,12 +83,40 @@ const Index = () => {
             <a href="#professions" className="text-sm font-medium hover:text-primary transition-colors">Профессии</a>
             <a href="#results" className="text-sm font-medium hover:text-primary transition-colors">Результаты</a>
             <a href="#resources" className="text-sm font-medium hover:text-primary transition-colors">Ресурсы</a>
-            <Button variant="outline" size="sm">
-              <Icon name="Mail" size={16} className="mr-2" />
-              Контакты
+            <Button 
+              onClick={() => setShowSupportModal(true)}
+              className="bg-[#FF6B35] hover:bg-[#FF5722] text-white shadow-md hover:shadow-lg transition-all hover:scale-105"
+              size="sm"
+            >
+              💙 Поддержать проект
             </Button>
           </div>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="md:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            <Icon name={mobileMenuOpen ? "X" : "Menu"} size={24} />
+          </Button>
         </div>
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t bg-white px-4 py-4 space-y-3 animate-fade-in">
+            <a href="#professions" className="block text-sm font-medium hover:text-primary transition-colors py-2">Профессии</a>
+            <a href="#results" className="block text-sm font-medium hover:text-primary transition-colors py-2">Результаты</a>
+            <a href="#resources" className="block text-sm font-medium hover:text-primary transition-colors py-2">Ресурсы</a>
+            <Button 
+              onClick={() => {
+                setShowSupportModal(true);
+                setMobileMenuOpen(false);
+              }}
+              className="bg-[#FF6B35] hover:bg-[#FF5722] text-white w-full shadow-md"
+              size="sm"
+            >
+              💙 Поддержать проект
+            </Button>
+          </div>
+        )}
       </nav>
 
       <section className="container mx-auto px-4 pt-20 pb-16">
@@ -109,12 +141,48 @@ const Index = () => {
               <Icon name="Download" size={20} className="mr-2" />
               Скачать шпаргалку
             </Button>
-            <Button size="lg" variant="default" className="bg-accent hover:bg-accent/90 text-base">
-              <Icon name="Heart" size={20} className="mr-2" />
-              Поддержать проект
+            <Button 
+              size="lg" 
+              onClick={() => setShowSupportModal(true)}
+              className="bg-[#FF6B35] hover:bg-[#FF5722] text-white shadow-lg hover:shadow-xl transition-all hover:scale-105 text-base"
+            >
+              💙 Поддержать проект
             </Button>
           </div>
         </div>
+      </section>
+
+      <section className="container mx-auto px-4 py-8">
+        <Card className="bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] border-0 overflow-hidden relative group hover:shadow-2xl transition-all duration-300">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30"></div>
+          <CardContent className="relative p-6 md:p-8">
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <div className="flex-shrink-0">
+                <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-4xl group-hover:scale-110 transition-transform">
+                  🚀
+                </div>
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                  Помогите развивать проект!
+                </h3>
+                <p className="text-white/90 text-sm md:text-base leading-relaxed">
+                  Школьное исследование о промт-архитектуре нуждается в вашей поддержке. 
+                  Поделитесь проектом, расскажите в школе или предложите сотрудничество!
+                </p>
+              </div>
+              <div className="flex-shrink-0">
+                <Button 
+                  onClick={() => setShowSupportModal(true)}
+                  size="lg" 
+                  className="bg-white text-[#FF6B35] hover:bg-gray-50 shadow-xl hover:shadow-2xl transition-all hover:scale-105 font-semibold"
+                >
+                  💙 Поддержать сейчас
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </section>
 
       <section className="container mx-auto px-4 py-16">
@@ -437,34 +505,53 @@ const Index = () => {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-3">Контакты</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-center gap-2">
-                  <Icon name="Mail" size={16} />
-                  <span>info@promt-azbuka.ru</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Icon name="MapPin" size={16} />
-                  <span>Школа №14, г. Верхняя Салда</span>
-                </li>
-              </ul>
+              <h3 className="font-semibold mb-3">Поддержать проект</h3>
+              <p className="text-sm text-muted-foreground mb-3">
+                Помогите развивать образовательные инициативы
+              </p>
+              <Button 
+                onClick={() => setShowSupportModal(true)}
+                className="bg-[#FF6B35] hover:bg-[#FF5722] text-white w-full"
+                size="sm"
+              >
+                💙 Поддержать
+              </Button>
+              <div className="mt-4 space-y-1">
+                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                  <Icon name="Mail" size={12} />
+                  l.luneva@live.ru
+                </p>
+                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                  <Icon name="MapPin" size={12} />
+                  МАОУ «Школа №14»
+                </p>
+              </div>
             </div>
           </div>
-          <div className="border-t pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-muted-foreground">
-              © 2024 Промт-Азбука. Проект Кирилла Зверева
-            </p>
-            <div className="flex gap-4">
-              <Button variant="ghost" size="sm">
-                <Icon name="Mail" size={18} />
-              </Button>
-              <Button variant="ghost" size="sm">
-                <Icon name="MessageCircle" size={18} />
-              </Button>
+          <div className="border-t pt-6">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+              <p className="text-sm text-muted-foreground">
+                © 2024 Промт-Азбука. Проект Кирилла Зверева
+              </p>
+              <div className="flex gap-4">
+                <Button variant="ghost" size="sm">
+                  <Icon name="Mail" size={18} />
+                </Button>
+                <Button variant="ghost" size="sm">
+                  <Icon name="MessageCircle" size={18} />
+                </Button>
+              </div>
+            </div>
+            <div className="bg-primary/5 rounded-lg p-3 text-center">
+              <p className="text-xs text-muted-foreground">
+                Проект поддержали: <span className="font-medium">МАОУ «Школа №14»</span> • <span className="font-medium">Учителя-предметники</span> • <span className="font-medium">211+ подписчиков</span>
+              </p>
             </div>
           </div>
         </div>
       </footer>
+
+      <SupportModal open={showSupportModal} onOpenChange={setShowSupportModal} />
     </div>
   );
 };
