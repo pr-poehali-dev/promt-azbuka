@@ -50,12 +50,13 @@ const useCountUp = (end: number, duration = 2000, start = false) => {
 
 const StatCard = ({ value, suffix, label, icon, animate }: { value: number; suffix: string; label: string; icon: string; animate: boolean }) => {
   const count = useCountUp(value, 1800, animate);
+  const isOrange = label.includes("Рост") || label.includes("Профессий");
   return (
-    <div className="text-center p-6">
-      <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
-        <Icon name={icon as "Briefcase"} size={24} className="text-primary" />
+    <div className={`text-center p-6 ${isOrange ? "bg-gradient-to-b from-[#FF5500]/5 to-transparent" : ""}`}>
+      <div className={`w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3 ${isOrange ? "bg-[#FF5500]/15" : "bg-primary/10"}`}>
+        <Icon name={icon as "Briefcase"} size={24} className={isOrange ? "text-[#FF5500]" : "text-primary"} />
       </div>
-      <div className="text-4xl font-black text-primary mb-1">
+      <div className={`text-4xl font-black mb-1 ${isOrange ? "text-[#FF5500]" : "text-primary"}`}>
         {animate ? count : value}{suffix}
       </div>
       <div className="text-sm text-muted-foreground font-medium">{label}</div>
@@ -102,13 +103,13 @@ const Index = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Button size="lg" className="text-base px-8 shadow-lg hover:shadow-xl transition-all hover:scale-105" asChild>
+              <Button size="lg" className="text-base px-8 shadow-lg hover:shadow-xl transition-all hover:scale-105 bg-[#FF5500] hover:bg-[#E04A00] text-white border-0" asChild>
                 <Link to="/alphabet">
                   <Icon name="Compass" size={20} className="mr-2" />
                   🧭 Исследовать профессии
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="text-base px-8 border-2 hover:bg-primary/5" asChild>
+              <Button size="lg" variant="outline" className="text-base px-8 border-2 border-[#FF5500] text-[#FF5500] hover:bg-[#FF5500]/10" asChild>
                 <Link to="/resources">
                   <Icon name="Download" size={20} className="mr-2" />
                   📥 Скачать шпаргалку
@@ -129,7 +130,7 @@ const Index = () => {
                 </Link>
               ))}
               <Link to="/alphabet">
-                <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center hover:bg-primary/90 transition-colors shadow-md">
+                <div className="w-16 h-16 bg-[#FF5500] rounded-2xl flex items-center justify-center hover:bg-[#E04A00] transition-colors shadow-md shadow-orange-300/50">
                   <span className="text-white text-xs font-bold text-center leading-tight">Все<br/>буквы</span>
                 </div>
               </Link>
@@ -164,7 +165,7 @@ const Index = () => {
                 <p className="text-muted-foreground leading-relaxed mb-8">
                   Нажми на любую букву и убедись сам — у каждой профессии есть свой язык общения с ИИ.
                 </p>
-                <Button asChild className="shadow-md">
+                <Button asChild className="shadow-md bg-[#FF5500] hover:bg-[#E04A00] text-white border-0">
                   <Link to="/alphabet">
                     <Icon name="BookOpen" size={18} className="mr-2" />
                     Открыть азбуку профессий
@@ -192,10 +193,22 @@ const Index = () => {
           </div>
         </section>
 
+        {/* Orange divider band */}
+        <div className="bg-[#FF5500] py-5 overflow-hidden relative">
+          <div className="flex gap-8 animate-none whitespace-nowrap container mx-auto px-4">
+            {["🚀 60 профессий", "⚡ 60 готовых промтов", "🎯 Принцип 4К", "🤖 ИИ-навык будущего", "🏭 Кейс ВСМПО-АВИСМА", "📊 89% рост понимания", "🚀 60 профессий", "⚡ 60 готовых промтов", "🎯 Принцип 4К"].map((item, i) => (
+              <span key={i} className="text-white font-bold text-sm shrink-0">{item}</span>
+            ))}
+          </div>
+        </div>
+
         {/* Featured Professions */}
         <section className="container mx-auto px-4 py-16" id="professions">
           <div className="text-center mb-12">
-            <Badge className="mb-4 bg-secondary text-secondary-foreground">Популярные профессии</Badge>
+            <div className="inline-flex items-center gap-2 bg-[#FF5500]/10 border border-[#FF5500]/30 rounded-full px-4 py-1.5 mb-4">
+              <Icon name="Flame" size={14} className="text-[#FF5500]" />
+              <span className="text-[#FF5500] text-sm font-semibold">Популярные профессии</span>
+            </div>
             <h2 className="text-3xl md:text-4xl font-bold">Откройте профессии будущего</h2>
             <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
               Каждая карточка — это готовый промт для разговора с ИИ
@@ -236,7 +249,7 @@ const Index = () => {
           </div>
 
           <div className="text-center mt-10">
-            <Button size="lg" variant="outline" className="border-2" asChild>
+            <Button size="lg" className="bg-[#FF5500] hover:bg-[#E04A00] text-white border-0 shadow-lg shadow-orange-300/40 hover:shadow-orange-400/50 hover:scale-105 transition-all" asChild>
               <Link to="/alphabet">
                 <Icon name="Grid3x3" size={18} className="mr-2" />
                 Смотреть все 60 профессий

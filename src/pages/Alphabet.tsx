@@ -28,12 +28,17 @@ const Alphabet = () => {
   return (
     <Layout>
       <div className="bg-gradient-to-b from-white via-blue-50/30 to-white">
+        {/* Orange top bar */}
+        <div className="bg-gradient-to-r from-[#FF5500] to-[#FF8C00] h-2" />
         {/* Header */}
         <section className="container mx-auto px-4 pt-12 pb-8">
           <div className="text-center max-w-3xl mx-auto">
-            <Badge className="mb-4 bg-secondary text-secondary-foreground">60 профессий · 22 буквы</Badge>
+            <div className="inline-flex items-center gap-2 bg-[#FF5500]/10 border border-[#FF5500]/30 rounded-full px-4 py-1.5 mb-4">
+              <Icon name="BookOpen" size={14} className="text-[#FF5500]" />
+              <span className="text-[#FF5500] text-sm font-semibold">60 профессий · 22 буквы</span>
+            </div>
             <h1 className="text-4xl md:text-5xl font-black mb-4">
-              Азбука <span className="text-primary">профессий будущего</span>
+              Азбука <span className="text-[#FF5500]">профессий будущего</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
               Выбери букву, чтобы найти свою профессию. Наведи на букву — увидишь профессии.
@@ -77,7 +82,7 @@ const Alphabet = () => {
                       disabled={!hasProfs}
                       className={`w-14 h-14 rounded-2xl text-2xl font-black transition-all ${
                         hasProfs
-                          ? "bg-white border-2 border-border hover:border-primary hover:bg-primary hover:text-white hover:shadow-lg cursor-pointer text-primary hover:scale-110"
+                          ? "bg-white border-2 border-border hover:border-[#FF5500] hover:bg-[#FF5500] hover:text-white hover:shadow-lg hover:shadow-orange-300/50 cursor-pointer text-[#FF5500] hover:scale-110"
                           : "bg-gray-50 border-2 border-gray-100 text-gray-300 cursor-default"
                       }`}
                     >

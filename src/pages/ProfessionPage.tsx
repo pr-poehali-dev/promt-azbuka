@@ -59,7 +59,7 @@ const ProfessionPage = () => {
             <div className="flex flex-col md:flex-row items-start gap-8">
               {/* Big letter */}
               <div className="flex-shrink-0">
-                <div className="w-28 h-28 bg-gradient-to-br from-primary to-blue-600 rounded-3xl flex items-center justify-center shadow-2xl">
+                <div className="w-28 h-28 bg-gradient-to-br from-[#FF5500] to-[#FF8C00] rounded-3xl flex items-center justify-center shadow-2xl shadow-orange-300/50">
                   <span className="text-6xl font-black text-white leading-none">{profession.letter}</span>
                 </div>
               </div>
@@ -76,7 +76,7 @@ const ProfessionPage = () => {
                 <p className="text-xl text-muted-foreground leading-relaxed">{profession.description}</p>
 
                 <div className="flex flex-wrap gap-3 mt-6">
-                  <Button onClick={copyPrompt} className="shadow-md">
+                  <Button onClick={copyPrompt} className="shadow-md bg-[#FF5500] hover:bg-[#E04A00] text-white border-0 shadow-orange-300/40">
                     <Icon name={copied ? "Check" : "Copy"} size={18} className="mr-2" />
                     {copied ? "Скопировано!" : "📋 Скопировать промт"}
                   </Button>
@@ -130,8 +130,8 @@ const ProfessionPage = () => {
             </Card>
 
             {/* Prompt Solution */}
-            <Card className="border-2 border-primary/30 overflow-hidden">
-              <div className="bg-gradient-to-r from-primary to-blue-600 px-6 md:px-8 py-5">
+            <Card className="border-2 border-[#FF5500]/40 overflow-hidden">
+              <div className="bg-gradient-to-r from-[#FF5500] to-[#FF8C00] px-6 md:px-8 py-5">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
                     <Icon name="MessageSquare" size={20} className="text-white" />
@@ -161,18 +161,18 @@ const ProfessionPage = () => {
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <Button onClick={copyPrompt} className="flex-1 shadow-md text-base h-12">
+                    <Button onClick={copyPrompt} className="flex-1 bg-[#FF5500] hover:bg-[#E04A00] text-white border-0 shadow-lg shadow-orange-300/40 text-base h-12">
                       <Icon name={copied ? "Check" : "Copy"} size={18} className="mr-2" />
                       {copied ? "✅ Скопировано!" : "📋 Копировать промт"}
                     </Button>
                   </div>
 
-                  <div className="mt-6 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
-                    <h3 className="font-bold text-blue-900 mb-2 flex items-center gap-2">
-                      <Icon name="Lightbulb" size={18} className="text-blue-600" />
+                  <div className="mt-6 p-5 bg-gradient-to-r from-[#FF5500]/5 to-orange-50 rounded-xl border border-[#FF5500]/20">
+                    <h3 className="font-bold text-[#CC4400] mb-2 flex items-center gap-2">
+                      <Icon name="Lightbulb" size={18} className="text-[#FF5500]" />
                       Суть синергии
                     </h3>
-                    <p className="text-blue-800 text-sm leading-relaxed">{profession.promptExplanation}</p>
+                    <p className="text-[#993300] text-sm leading-relaxed">{profession.promptExplanation}</p>
                   </div>
                 </div>
               </CardContent>

@@ -90,18 +90,21 @@ const Resources = () => {
   return (
     <Layout>
       <div className="bg-gradient-to-b from-white via-blue-50/30 to-white">
-        {/* Header */}
-        <section className="container mx-auto px-4 pt-12 pb-10">
-          <div className="text-center max-w-3xl mx-auto">
-            <Badge className="mb-4 bg-secondary text-secondary-foreground">Бесплатные материалы</Badge>
-            <h1 className="text-4xl md:text-5xl font-black mb-4">
-              Набор <span className="text-primary">промт-архитектора</span>
+        {/* Orange Hero Banner */}
+        <div className="bg-gradient-to-r from-[#FF5500] via-[#FF6B1A] to-[#FF8C00] py-16">
+          <div className="container mx-auto px-4 text-center">
+            <div className="inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-1.5 mb-5">
+              <Icon name="Flame" size={16} className="text-white" />
+              <span className="text-white text-sm font-semibold">Бесплатные материалы</span>
+            </div>
+            <h1 className="text-4xl md:text-6xl font-black text-white mb-4 drop-shadow-sm">
+              Набор промт-архитектора
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-xl text-white/90 max-w-xl mx-auto">
               Забери инструменты с собой — всё, что нужно для старта
             </p>
           </div>
-        </section>
+        </div>
 
         {/* Resources Grid */}
         <section className="container mx-auto px-4 py-8">
@@ -148,34 +151,38 @@ const Resources = () => {
           </div>
         </section>
 
-        {/* 4K Principle */}
-        <section className="container mx-auto px-4 py-16">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">Методология</Badge>
-              <h2 className="text-3xl font-bold">Принцип 4К промт-архитектора</h2>
-              <p className="text-muted-foreground mt-3">
-                Четыре ключа к эффективному запросу для ИИ
-              </p>
-            </div>
+        {/* 4K Principle — Orange Block */}
+        <section className="py-16 bg-gradient-to-br from-[#FF5500] to-[#FF8C00] relative overflow-hidden">
+          <div className="absolute inset-0 opacity-10" style={{backgroundImage: "radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px)", backgroundSize: "40px 40px"}} />
+          <div className="container mx-auto px-4 relative">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-1.5 mb-5">
+                  <Icon name="Key" size={16} className="text-white" />
+                  <span className="text-white text-sm font-semibold">Методология</span>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-black text-white">Принцип 4К промт-архитектора</h2>
+                <p className="text-white/80 mt-3 text-lg">
+                  Четыре ключа к эффективному запросу для ИИ
+                </p>
+              </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {principle4K.map((item, i) => (
-                <Card key={i} className="border-2 hover:border-primary/40 hover:shadow-lg transition-all">
-                  <CardContent className="p-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {principle4K.map((item, i) => (
+                  <div key={i} className="bg-white/15 backdrop-blur-sm rounded-2xl border border-white/30 p-5 hover:bg-white/25 transition-all">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-md">
-                        <span className="text-2xl font-black text-white">{item.letter}</span>
+                      <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg">
+                        <span className="text-2xl font-black text-[#FF5500]">{item.letter}</span>
                       </div>
-                      <h3 className="text-lg font-bold">{item.title}</h3>
+                      <h3 className="text-lg font-bold text-white">{item.title}</h3>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-3">{item.desc}</p>
-                    <div className="bg-muted/50 rounded-lg p-3">
-                      <p className="text-xs font-mono text-foreground/70">{item.example}</p>
+                    <p className="text-white/80 text-sm mb-3">{item.desc}</p>
+                    <div className="bg-black/20 rounded-lg p-3">
+                      <p className="text-xs font-mono text-white/90">{item.example}</p>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
