@@ -1,558 +1,350 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import SupportModal from "@/components/SupportModal";
+import Layout from "@/components/Layout";
+import { professions } from "@/data/professions";
+
+const featuredProfessions = [
+  professions.find(p => p.id === "arhitektor")!,
+  professions.find(p => p.id === "inzhener-metallurg")!,
+  professions.find(p => p.id === "kiberbezopasnik")!,
+  professions.find(p => p.id === "bioinformatik")!,
+  professions.find(p => p.id === "kompozitor")!,
+  professions.find(p => p.id === "ekolog")!,
+];
+
+const stats = [
+  { value: 60, suffix: "+", label: "Профессий в азбуке", icon: "Briefcase" },
+  { value: 500, suffix: "+", label: "Участников апробации", icon: "Users" },
+  { value: 89, suffix: "%", label: "Рост понимания ИИ", icon: "TrendingUp" },
+  { value: 12, suffix: "+", label: "Школ участвуют", icon: "GraduationCap" },
+];
+
+const alphabetPreview = [
+  { letter: "А", professions: ["Архитектор", "Аналитик данных"] },
+  { letter: "И", professions: ["Инженер-металлург", "IT-менеджер"] },
+  { letter: "В", professions: ["Врач", "Видеопродюсер"] },
+  { letter: "П", professions: ["Программист", "Психолог"] },
+  { letter: "К", professions: ["Кибербезопасник", "Космический инженер"] },
+  { letter: "М", professions: ["Маркетолог", "Менеджер проектов"] },
+];
+
+const useCountUp = (end: number, duration = 2000, start = false) => {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!start) return;
+    let startTime: number;
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      setCount(Math.floor(progress * end));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [end, duration, start]);
+  return count;
+};
+
+const StatCard = ({ value, suffix, label, icon, animate }: { value: number; suffix: string; label: string; icon: string; animate: boolean }) => {
+  const count = useCountUp(value, 1800, animate);
+  return (
+    <div className="text-center p-6">
+      <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+        <Icon name={icon as "Briefcase"} size={24} className="text-primary" />
+      </div>
+      <div className="text-4xl font-black text-primary mb-1">
+        {animate ? count : value}{suffix}
+      </div>
+      <div className="text-sm text-muted-foreground font-medium">{label}</div>
+    </div>
+  );
+};
 
 const Index = () => {
-  const [showSupportModal, setShowSupportModal] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const professions = [
-    {
-      letter: "А",
-      title: "Архитектор",
-      field: "Строительство",
-      icon: "Building2",
-      prompt: "Создай концепцию экологичного жилого комплекса с учётом энергоэффективности",
-      description: "Проектирование зданий и создание устойчивой городской среды"
-    },
-    {
-      letter: "Б",
-      title: "Биотехнолог",
-      field: "Наука",
-      icon: "Microscope",
-      prompt: "Разработай методику выращивания клеточных культур для медицинских исследований",
-      description: "Работа с живыми системами для создания новых продуктов"
-    },
-    {
-      letter: "В",
-      title: "Видеопродюсер",
-      field: "Творчество",
-      icon: "Video",
-      prompt: "Создай сценарий образовательного ролика о цифровых профессиях для подростков",
-      description: "Создание видеоконтента от идеи до финального монтажа"
-    },
-    {
-      letter: "Д",
-      title: "Дата-аналитик",
-      field: "IT",
-      icon: "BarChart3",
-      prompt: "Проанализируй тренды продаж за квартал и предложи стратегию роста",
-      description: "Анализ больших данных для принятия бизнес-решений"
-    },
-    {
-      letter: "И",
-      title: "Инженер-металлург",
-      field: "Инженерия",
-      icon: "Hammer",
-      prompt: "Оптимизируй состав титанового сплава для авиационной промышленности",
-      description: "Разработка и улучшение металлических материалов"
-    },
-    {
-      letter: "М",
-      title: "Маркетолог",
-      field: "Бизнес",
-      icon: "TrendingUp",
-      prompt: "Разработай кампанию по продвижению образовательного продукта для школьников",
-      description: "Продвижение товаров и услуг на рынке"
-    }
-  ];
+  const [animateStats, setAnimateStats] = useState(false);
+  const statsRef = useRef<HTMLDivElement>(null);
 
-  const stats = [
-    { value: "60+", label: "Профессий в азбуке", icon: "Briefcase" },
-    { value: "500+", label: "Участников апробации", icon: "Users" },
-    { value: "89%", label: "Улучшили навыки", icon: "TrendingUp" },
-    { value: "12+", label: "Школ участвуют", icon: "GraduationCap" }
-  ];
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setAnimateStats(true); },
+      { threshold: 0.3 }
+    );
+    if (statsRef.current) observer.observe(statsRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-blue-50/30 to-white">
-      <nav className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-              <Icon name="BookOpen" className="text-white" size={24} />
+    <Layout>
+      <div className="bg-gradient-to-b from-white via-blue-50/40 to-white">
+        {/* Hero Section */}
+        <section className="container mx-auto px-4 pt-16 pb-20">
+          <div className="max-w-5xl mx-auto text-center animate-fade-in">
+            <Badge className="mb-6 bg-secondary text-secondary-foreground hover:bg-secondary/80 px-4 py-1.5 text-sm">
+              <Icon name="Sparkles" size={14} className="mr-1.5" />
+              Образовательный проект · Победитель конференции НПК-2025
+            </Badge>
+
+            <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">
+              <span className="bg-gradient-to-r from-primary via-blue-500 to-indigo-600 bg-clip-text text-transparent">
+                Азбука промт-архитектора
+              </span>
+            </h1>
+
+            <p className="text-2xl md:text-3xl font-semibold text-foreground/80 mb-3">
+              Твой навигатор в мире профессий + ИИ
+            </p>
+
+            <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
+              60 профессий. 60 готовых промтов. 1 универсальный навык для будущего.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+              <Button size="lg" className="text-base px-8 shadow-lg hover:shadow-xl transition-all hover:scale-105" asChild>
+                <Link to="/alphabet">
+                  <Icon name="Compass" size={20} className="mr-2" />
+                  🧭 Исследовать профессии
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="text-base px-8 border-2 hover:bg-primary/5" asChild>
+                <Link to="/resources">
+                  <Icon name="Download" size={20} className="mr-2" />
+                  📥 Скачать шпаргалку
+                </Link>
+              </Button>
             </div>
-            <span className="font-bold text-xl text-primary">Промт-Азбука</span>
-          </div>
-          <div className="hidden md:flex items-center gap-6">
-            <a href="#professions" className="text-sm font-medium hover:text-primary transition-colors">Профессии</a>
-            <a href="#results" className="text-sm font-medium hover:text-primary transition-colors">Результаты</a>
-            <a href="#resources" className="text-sm font-medium hover:text-primary transition-colors">Ресурсы</a>
-            <Button 
-              onClick={() => setShowSupportModal(true)}
-              className="bg-[#FF6B35] hover:bg-[#FF5722] text-white shadow-md hover:shadow-lg transition-all hover:scale-105"
-              size="sm"
-            >
-              💙 Поддержать проект
-            </Button>
-          </div>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="md:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <Icon name={mobileMenuOpen ? "X" : "Menu"} size={24} />
-          </Button>
-        </div>
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t bg-white px-4 py-4 space-y-3 animate-fade-in">
-            <a href="#professions" className="block text-sm font-medium hover:text-primary transition-colors py-2">Профессии</a>
-            <a href="#results" className="block text-sm font-medium hover:text-primary transition-colors py-2">Результаты</a>
-            <a href="#resources" className="block text-sm font-medium hover:text-primary transition-colors py-2">Ресурсы</a>
-            <Button 
-              onClick={() => {
-                setShowSupportModal(true);
-                setMobileMenuOpen(false);
-              }}
-              className="bg-[#FF6B35] hover:bg-[#FF5722] text-white w-full shadow-md"
-              size="sm"
-            >
-              💙 Поддержать проект
-            </Button>
-          </div>
-        )}
-      </nav>
 
-      <section className="container mx-auto px-4 pt-20 pb-16">
-        <div className="max-w-4xl mx-auto text-center animate-fade-in">
-          <Badge className="mb-4 bg-secondary text-secondary-foreground hover:bg-secondary/80">
-            <Icon name="Sparkles" size={14} className="mr-1" />
-            Образовательный проект
-          </Badge>
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight bg-gradient-to-r from-primary via-blue-600 to-primary bg-clip-text text-transparent">
-            Первая азбука промт-архитектора
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-            Откройте мир профессий будущего через призму промт-инжиниринга.<br />
-            Для школьников 14-18 лет, учителей и родителей.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-base">
-              <Icon name="Search" size={20} className="mr-2" />
-              Исследовать профессии
-            </Button>
-            <Button size="lg" variant="outline" className="text-base">
-              <Icon name="Download" size={20} className="mr-2" />
-              Скачать шпаргалку
-            </Button>
-            <Button 
-              size="lg" 
-              onClick={() => setShowSupportModal(true)}
-              className="bg-[#FF6B35] hover:bg-[#FF5722] text-white shadow-lg hover:shadow-xl transition-all hover:scale-105 text-base"
-            >
-              💙 Поддержать проект
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      <section className="container mx-auto px-4 py-8">
-        <Card className="bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] border-0 overflow-hidden relative group hover:shadow-2xl transition-all duration-300">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30"></div>
-          <CardContent className="relative p-6 md:p-8">
-            <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="flex-shrink-0">
-                <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-4xl group-hover:scale-110 transition-transform">
-                  🚀
+            {/* Alphabet Preview Tiles */}
+            <div className="flex flex-wrap gap-3 justify-center mt-8">
+              {alphabetPreview.map(({ letter, professions: profs }) => (
+                <Link key={letter} to="/alphabet">
+                  <div className="group relative w-16 h-16 bg-white rounded-2xl border-2 border-border hover:border-primary hover:shadow-lg transition-all cursor-pointer flex items-center justify-center">
+                    <span className="text-2xl font-black text-primary">{letter}</span>
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-44 bg-gray-900 text-white text-xs rounded-lg p-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 text-left shadow-xl">
+                      {profs.map(p => <div key={p} className="py-0.5">· {p}</div>)}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+              <Link to="/alphabet">
+                <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center hover:bg-primary/90 transition-colors shadow-md">
+                  <span className="text-white text-xs font-bold text-center leading-tight">Все<br/>буквы</span>
                 </div>
-              </div>
-              <div className="flex-1 text-center md:text-left">
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                  Помогите развивать проект!
-                </h3>
-                <p className="text-white/90 text-sm md:text-base leading-relaxed">
-                  Школьное исследование о промт-архитектуре нуждается в вашей поддержке. 
-                  Поделитесь проектом, расскажите в школе или предложите сотрудничество!
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Stats */}
+        <section className="container mx-auto px-4 py-8" ref={statsRef}>
+          <div className="bg-white rounded-3xl shadow-xl border grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-border overflow-hidden">
+            {stats.map(stat => (
+              <StatCard key={stat.label} {...stat} animate={animateStats} />
+            ))}
+          </div>
+        </section>
+
+        {/* About Section */}
+        <section className="container mx-auto px-4 py-16">
+          <div className="max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div>
+                <Badge className="mb-4 bg-blue-50 text-blue-700 border-blue-200">О чём этот проект?</Badge>
+                <h2 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
+                  ИИ — не замена человеку,<br />
+                  <span className="text-primary">а суперинструмент</span>
+                </h2>
+                <p className="text-muted-foreground leading-relaxed mb-6">
+                  Мир меняется. Промт-архитектор — это не просто профессия, это новая грамотность. 
+                  Мы создали «Азбуку», чтобы показать: врач, инженер, дизайнер и эколог 
+                  могут использовать ИИ для усиления своих навыков.
                 </p>
-              </div>
-              <div className="flex-shrink-0">
-                <Button 
-                  onClick={() => setShowSupportModal(true)}
-                  size="lg" 
-                  className="bg-white text-[#FF6B35] hover:bg-gray-50 shadow-xl hover:shadow-2xl transition-all hover:scale-105 font-semibold"
-                >
-                  💙 Поддержать сейчас
+                <p className="text-muted-foreground leading-relaxed mb-8">
+                  Нажми на любую букву и убедись сам — у каждой профессии есть свой язык общения с ИИ.
+                </p>
+                <Button asChild className="shadow-md">
+                  <Link to="/alphabet">
+                    <Icon name="BookOpen" size={18} className="mr-2" />
+                    Открыть азбуку профессий
+                  </Link>
                 </Button>
               </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                {alphabetPreview.slice(0, 4).map(({ letter, professions: profs }) => (
+                  <Link key={letter} to="/alphabet">
+                    <Card className="hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer border-2 hover:border-primary/50">
+                      <CardContent className="p-4">
+                        <div className="text-5xl font-black text-primary/20 mb-2 leading-none">{letter}</div>
+                        <div className="space-y-1">
+                          {profs.map(p => (
+                            <div key={p} className="text-xs font-medium text-foreground/70 leading-tight">• {p}</div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </CardContent>
-        </Card>
-      </section>
+          </div>
+        </section>
 
-      <section className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {stats.map((stat, index) => (
-            <Card key={index} className="text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1 animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-              <CardContent className="pt-6">
-                <div className="w-12 h-12 mx-auto mb-3 bg-primary/10 rounded-full flex items-center justify-center">
-                  <Icon name={stat.icon as any} className="text-primary" size={24} />
-                </div>
-                <div className="text-3xl font-bold text-primary mb-1">{stat.value}</div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      <section id="professions" className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12 animate-fade-in">
-          <h2 className="text-4xl font-bold mb-4">Популярные профессии</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Изучите 60 профессий от А до Я с готовыми промтами для каждой специальности
-          </p>
-        </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {professions.map((prof, index) => (
-            <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer animate-scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
-              <CardHeader>
-                <div className="flex items-start justify-between mb-2">
-                  <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-2xl font-bold text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                    {prof.letter}
-                  </div>
-                  <Badge variant="secondary" className="text-xs">
-                    <Icon name={prof.icon as any} size={12} className="mr-1" />
-                    {prof.field}
-                  </Badge>
-                </div>
-                <CardTitle className="text-xl group-hover:text-primary transition-colors">{prof.title}</CardTitle>
-                <CardDescription className="line-clamp-2">{prof.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="bg-secondary/50 rounded-lg p-3 border border-primary/10">
-                  <div className="flex items-start gap-2">
-                    <Icon name="Terminal" size={16} className="text-primary mt-0.5 flex-shrink-0" />
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {prof.prompt}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-        <div className="text-center mt-10">
-          <Button size="lg" variant="outline">
-            Смотреть все 60 профессий
-            <Icon name="ArrowRight" size={18} className="ml-2" />
-          </Button>
-        </div>
-      </section>
-
-      <section id="results" className="bg-gradient-to-br from-primary/5 via-blue-50/50 to-secondary/20 py-16">
-        <div className="container mx-auto px-4">
+        {/* Featured Professions */}
+        <section className="container mx-auto px-4 py-16" id="professions">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">Результаты апробации</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Более 500 школьников из 12 школ прошли обучение по методике промт-архитектуры
+            <Badge className="mb-4 bg-secondary text-secondary-foreground">Популярные профессии</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold">Откройте профессии будущего</h2>
+            <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
+              Каждая карточка — это готовый промт для разговора с ИИ
             </p>
           </div>
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <Card className="overflow-hidden">
-              <CardHeader className="bg-gradient-to-br from-primary to-blue-600 text-white">
-                <CardTitle className="flex items-center gap-2">
-                  <Icon name="Users" size={24} />
-                  Участники проекта
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Школьники 14-18 лет</span>
-                    <span className="text-2xl font-bold text-primary">520</span>
-                  </div>
-                  <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
-                    <div className="h-full bg-primary rounded-full" style={{ width: '89%' }}></div>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Педагоги</span>
-                    <span className="text-2xl font-bold text-primary">45</span>
-                  </div>
-                  <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
-                    <div className="h-full bg-primary rounded-full" style={{ width: '75%' }}></div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
 
-            <Card className="overflow-hidden">
-              <CardHeader className="bg-gradient-to-br from-accent to-orange-500 text-white">
-                <CardTitle className="flex items-center gap-2">
-                  <Icon name="TrendingUp" size={24} />
-                  Улучшение навыков
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Работа с ИИ</span>
-                    <span className="text-2xl font-bold text-accent">+89%</span>
-                  </div>
-                  <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
-                    <div className="h-full bg-accent rounded-full" style={{ width: '89%' }}></div>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Профориентация</span>
-                    <span className="text-2xl font-bold text-accent">+76%</span>
-                  </div>
-                  <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
-                    <div className="h-full bg-accent rounded-full" style={{ width: '76%' }}></div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {featuredProfessions.filter(Boolean).map(profession => (
+              <Link key={profession.id} to={`/profession/${profession.id}`}>
+                <Card className="h-full hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer group border-2 hover:border-primary/40 overflow-hidden">
+                  <CardContent className="p-6 flex flex-col h-full">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors flex-shrink-0">
+                        <Icon name={profession.icon as "Building2"} size={24} className="text-primary" />
+                      </div>
+                      <div className="text-6xl font-black text-primary/10 leading-none">{profession.letter}</div>
+                    </div>
+
+                    <div className="mb-2">
+                      <Badge variant="outline" className="text-xs mb-2">{profession.field}</Badge>
+                      <h3 className="text-lg font-bold group-hover:text-primary transition-colors">{profession.title}</h3>
+                      <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{profession.description}</p>
+                    </div>
+
+                    <div className="mt-auto pt-4 border-t border-border/60">
+                      <p className="text-xs text-muted-foreground mb-1 font-medium uppercase tracking-wide">Задача для промта</p>
+                      <p className="text-sm text-foreground/70 line-clamp-2">{profession.challenge.substring(0, 90)}...</p>
+                    </div>
+
+                    <div className="mt-3 flex items-center text-primary text-sm font-medium">
+                      <span>Смотреть промт</span>
+                      <Icon name="ArrowRight" size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
           </div>
-        </div>
-      </section>
 
-      <section id="resources" className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">Образовательные ресурсы</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Бесплатные материалы для школьников, учителей и родителей
-          </p>
-        </div>
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-            <CardHeader>
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
-                <Icon name="BookMarked" className="text-primary" size={24} />
-              </div>
-              <CardTitle>Мини-курс Stepik</CardTitle>
-              <CardDescription>
-                Интерактивный курс по основам промт-инжиниринга с практическими заданиями
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full">
-                <Icon name="ExternalLink" size={16} className="mr-2" />
-                Перейти к курсу
-              </Button>
-            </CardContent>
-          </Card>
+          <div className="text-center mt-10">
+            <Button size="lg" variant="outline" className="border-2" asChild>
+              <Link to="/alphabet">
+                <Icon name="Grid3x3" size={18} className="mr-2" />
+                Смотреть все 60 профессий
+              </Link>
+            </Button>
+          </div>
+        </section>
 
-          <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-            <CardHeader>
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
-                <Icon name="Send" className="text-primary" size={24} />
-              </div>
-              <CardTitle>Telegram-канал</CardTitle>
-              <CardDescription>
-                Новости проекта, полезные материалы и сообщество единомышленников
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full" variant="outline">
-                <Icon name="ExternalLink" size={16} className="mr-2" />
-                Подписаться
-              </Button>
-            </CardContent>
-          </Card>
+        {/* VSMPO Teaser */}
+        <section className="container mx-auto px-4 py-8">
+          <Link to="/vsmpo">
+            <Card className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 border-0 overflow-hidden relative group hover:shadow-2xl transition-all cursor-pointer">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <CardContent className="relative p-8 md:p-12">
+                <div className="flex flex-col md:flex-row items-center gap-8">
+                  <div className="w-20 h-20 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                    <Icon name="Factory" size={40} className="text-white" />
+                  </div>
+                  <div className="flex-1 text-center md:text-left">
+                    <Badge className="mb-3 bg-white/20 text-white border-white/30">Региональный кейс</Badge>
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                      ВСМПО-АВИСМА: Космос начинается здесь
+                    </h3>
+                    <p className="text-white/80 text-base leading-relaxed">
+                      Мировой лидер титановой индустрии находится в 15 минутах езды от твоей школы. 
+                      Узнай, какие специалисты здесь нужны и как ИИ делает их работу ещё круче.
+                    </p>
+                    <div className="flex flex-wrap gap-3 mt-4">
+                      {["25% мирового рынка", "17 000+ сотрудников", "Поставщик Airbus и Boeing"].map(item => (
+                        <Badge key={item} className="bg-white/10 text-white border-white/20">{item}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                      <Icon name="ArrowRight" size={24} className="text-white group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        </section>
 
-          <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-            <CardHeader>
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
-                <Icon name="FileText" className="text-primary" size={24} />
-              </div>
-              <CardTitle>Памятка PDF</CardTitle>
-              <CardDescription>
-                Шпаргалка с основными промтами для 60 профессий в удобном формате
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full" variant="outline">
-                <Icon name="Download" size={16} className="mr-2" />
-                Скачать PDF
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      <section className="bg-gradient-to-br from-primary to-blue-700 text-white py-16">
-        <div className="container mx-auto px-4">
+        {/* Quote */}
+        <section className="container mx-auto px-4 py-16" id="results">
           <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-10">
-              <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Icon name="Heart" className="text-white" size={32} />
-              </div>
-              <h2 className="text-4xl font-bold mb-4">Поддержать проект</h2>
-              <p className="text-lg text-white/90">
-                Помогите развивать цифровые навыки у молодёжи и создавать методические материалы для школ
-              </p>
-            </div>
-
-            <Card className="bg-white/10 backdrop-blur-sm border-white/20">
-              <CardHeader>
-                <CardTitle className="text-white text-2xl">Варианты поддержки</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <RadioGroup defaultValue="financial" className="space-y-3">
-                  <div className="flex items-center space-x-3 bg-white/5 p-4 rounded-lg hover:bg-white/10 transition-colors cursor-pointer">
-                    <RadioGroupItem value="financial" id="financial" className="border-white text-white" />
-                    <Label htmlFor="financial" className="flex-1 cursor-pointer text-white">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Icon name="Wallet" size={18} />
-                        <span className="font-semibold">Финансовая поддержка</span>
-                      </div>
-                      <p className="text-sm text-white/70">Яндекс.Кошелёк, Тинькофф, Сбербанк</p>
-                    </Label>
-                  </div>
-
-                  <div className="flex items-center space-x-3 bg-white/5 p-4 rounded-lg hover:bg-white/10 transition-colors cursor-pointer">
-                    <RadioGroupItem value="info" id="info" className="border-white text-white" />
-                    <Label htmlFor="info" className="flex-1 cursor-pointer text-white">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Icon name="Share2" size={18} />
-                        <span className="font-semibold">Информационная поддержка</span>
-                      </div>
-                      <p className="text-sm text-white/70">Рассказать в соцсетях и школах</p>
-                    </Label>
-                  </div>
-
-                  <div className="flex items-center space-x-3 bg-white/5 p-4 rounded-lg hover:bg-white/10 transition-colors cursor-pointer">
-                    <RadioGroupItem value="expert" id="expert" className="border-white text-white" />
-                    <Label htmlFor="expert" className="flex-1 cursor-pointer text-white">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Icon name="Lightbulb" size={18} />
-                        <span className="font-semibold">Экспертная поддержка</span>
-                      </div>
-                      <p className="text-sm text-white/70">Консультации и мастер-классы</p>
-                    </Label>
-                  </div>
-                </RadioGroup>
-
-                <div className="space-y-3 pt-4">
-                  <div>
-                    <Label htmlFor="amount" className="text-white mb-2 block">Сумма поддержки (необязательно)</Label>
-                    <Input 
-                      id="amount" 
-                      type="number" 
-                      placeholder="Введите сумму" 
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-                    />
+            <Card className="bg-gradient-to-br from-primary/5 to-blue-50 border-primary/20 overflow-hidden relative">
+              <div className="absolute top-4 left-6 text-8xl text-primary/10 font-serif leading-none select-none">"</div>
+              <CardContent className="p-8 md:p-12 relative">
+                <p className="text-xl md:text-2xl font-medium text-foreground/80 leading-relaxed mb-6 italic">
+                  Раньше ИИ и титановый завод были для меня из разных вселенных. 
+                  Теперь я вижу, что могу стать инженером по цифровым двойникам на ВСМПО!
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
+                    <Icon name="User" size={18} className="text-primary" />
                   </div>
                   <div>
-                    <Label htmlFor="email" className="text-white mb-2 block">Email для связи</Label>
-                    <Input 
-                      id="email" 
-                      type="email" 
-                      placeholder="your@email.com" 
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-                    />
-                  </div>
-                </div>
-
-                <Button size="lg" className="w-full bg-accent hover:bg-accent/90 text-white text-lg">
-                  <Icon name="Heart" size={20} className="mr-2" />
-                  Поддержать проект
-                </Button>
-
-                <div className="text-center pt-4">
-                  <p className="text-sm text-white/70 mb-2">На что пойдут средства:</p>
-                  <div className="flex flex-wrap gap-2 justify-center">
-                    <Badge variant="secondary" className="bg-white/10 text-white border-white/20">
-                      Развитие сайта
-                    </Badge>
-                    <Badge variant="secondary" className="bg-white/10 text-white border-white/20">
-                      Печать книги
-                    </Badge>
-                    <Badge variant="secondary" className="bg-white/10 text-white border-white/20">
-                      Мероприятия
-                    </Badge>
+                    <div className="font-semibold text-sm">Участник апробации</div>
+                    <div className="text-sm text-muted-foreground">Ученик 10А класса, МАОУ СОШ №14</div>
                   </div>
                 </div>
               </CardContent>
             </Card>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <footer className="bg-gray-50 border-t py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <Icon name="BookOpen" className="text-white" size={18} />
-                </div>
-                <span className="font-bold text-lg">Промт-Азбука</span>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Образовательный проект для профориентации школьников через промт-инжиниринг
-              </p>
+        {/* Resources teaser */}
+        <section className="container mx-auto px-4 py-8 pb-16" id="resources">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-10">
+              <Badge className="mb-4">Ресурсы проекта</Badge>
+              <h2 className="text-3xl font-bold">Набор промт-архитектора</h2>
+              <p className="text-muted-foreground mt-2">Забери инструменты с собой</p>
             </div>
-            <div>
-              <h3 className="font-semibold mb-3">Проект</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#professions" className="hover:text-primary transition-colors">Профессии</a></li>
-                <li><a href="#results" className="hover:text-primary transition-colors">Результаты</a></li>
-                <li><a href="#resources" className="hover:text-primary transition-colors">Ресурсы</a></li>
-              </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { icon: "PlayCircle", title: "Мини-курс на Stepik", desc: "5 видеоуроков + сертификат", color: "bg-blue-50 text-blue-600", href: "/resources" },
+                { icon: "Send", title: "Telegram-канал", desc: "Ежедневные промты и новости", color: "bg-sky-50 text-sky-600", href: "https://t.me/+QgiLIa1gFRY4Y2Iy" },
+                { icon: "FileDown", title: "Шпаргалка PDF", desc: "Принцип 4К и чек-лист 5С", color: "bg-green-50 text-green-600", href: "/resources" },
+                { icon: "BookOpen", title: "Методичка для учителя", desc: "Поурочное планирование", color: "bg-orange-50 text-orange-600", href: "/resources" },
+              ].map(item => (
+                <Link key={item.title} to={item.href}>
+                  <Card className="h-full hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer border-2 hover:border-primary/40">
+                    <CardContent className="p-5 text-center">
+                      <div className={`w-12 h-12 ${item.color} rounded-xl flex items-center justify-center mx-auto mb-3`}>
+                        <Icon name={item.icon as "BookOpen"} size={24} />
+                      </div>
+                      <h4 className="font-semibold text-sm mb-1">{item.title}</h4>
+                      <p className="text-xs text-muted-foreground">{item.desc}</p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
             </div>
-            <div>
-              <h3 className="font-semibold mb-3">Для педагогов</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-primary transition-colors">Методические материалы</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Презентации</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Мастер-классы</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-3">Поддержать проект</h3>
-              <p className="text-sm text-muted-foreground mb-3">
-                Помогите развивать образовательные инициативы
-              </p>
-              <Button 
-                onClick={() => setShowSupportModal(true)}
-                className="bg-[#FF6B35] hover:bg-[#FF5722] text-white w-full"
-                size="sm"
-              >
-                💙 Поддержать
+            <div className="text-center mt-6">
+              <Button variant="outline" asChild>
+                <Link to="/resources">
+                  <Icon name="ExternalLink" size={16} className="mr-2" />
+                  Все ресурсы проекта
+                </Link>
               </Button>
-              <div className="mt-4 space-y-1">
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <Icon name="Mail" size={12} />
-                  l.luneva@live.ru
-                </p>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <Icon name="MapPin" size={12} />
-                  МАОУ «Школа №14»
-                </p>
-              </div>
             </div>
           </div>
-          <div className="border-t pt-6">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
-              <p className="text-sm text-muted-foreground">
-                © 2024 Промт-Азбука. Проект Кирилла Зверева
-              </p>
-              <div className="flex gap-4">
-                <Button variant="ghost" size="sm">
-                  <Icon name="Mail" size={18} />
-                </Button>
-                <Button variant="ghost" size="sm">
-                  <Icon name="MessageCircle" size={18} />
-                </Button>
-              </div>
-            </div>
-            <div className="bg-primary/5 rounded-lg p-3 text-center">
-              <p className="text-xs text-muted-foreground">
-                Проект поддержали: <span className="font-medium">МАОУ «Школа №14»</span> • <span className="font-medium">Учителя-предметники</span> • <span className="font-medium">211+ подписчиков</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </footer>
-
-      <SupportModal open={showSupportModal} onOpenChange={setShowSupportModal} />
-    </div>
+        </section>
+      </div>
+    </Layout>
   );
 };
 
