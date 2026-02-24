@@ -129,7 +129,7 @@ const Index = () => {
             Первая азбука промт-архитектора
           </h1>
           <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-            Откройте мир профессий будущего через призму промт-инжиниринга. 
+            Откройте мир профессий будущего через призму промт-инжиниринга.<br />
             Для школьников 14-18 лет, учителей и родителей.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
