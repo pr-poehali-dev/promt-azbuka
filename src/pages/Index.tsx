@@ -356,7 +356,26 @@ const Index = () => {
             </div>
           </div>
         </section>
+              </div>
+        </section>
       </div>
+
+      {/* ТЕСТОВЫЙ БЛОК */}
+      <div style={{ 
+        padding: '20px', 
+        background: '#f0f9ff', 
+        borderLeft: '4px solid #3b82f6',
+        margin: '20px 0',
+        borderRadius: '4px',
+        maxWidth: '1200px',
+        marginLeft: 'auto',
+        marginRight: 'auto'
+      }}>
+        <p style={{ margin: 0, fontFamily: 'sans-serif' }}>
+          🔥 <strong>Тестовый блок!</strong> Сюда потом можно вставить рекламу.
+        </p>
+      </div>
+
     </Layout>
   );
 };
