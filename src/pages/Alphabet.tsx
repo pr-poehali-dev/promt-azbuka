@@ -35,7 +35,7 @@ const Alphabet = () => {
           <div className="text-center max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 bg-[#FF5500]/10 border border-[#FF5500]/30 rounded-full px-4 py-1.5 mb-4">
               <Icon name="BookOpen" size={14} className="text-[#FF5500]" />
-              <span className="text-[#FF5500] text-sm font-semibold">60+ профессий · 29 букв</span>
+              <span className="text-[#FF5500] text-sm font-semibold">60+ профессий · весь алфавит</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black mb-4">
               Азбука <span className="text-[#FF5500]">профессий будущего</span>

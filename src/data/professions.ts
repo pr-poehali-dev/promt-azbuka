@@ -844,4 +844,4 @@ export const getRelatedProfessions = (ids: string[]): Profession[] => {
   return ids.map(id => professions.find(p => p.id === id)).filter(Boolean) as Profession[];
 };
 
-export const ALPHABET = ['А', 'Б', 'В', 'Г', 'Д', 'Э', 'Ж', 'З', 'И', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ю'];
+export const ALPHABET = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Э', 'Ю', 'Я'];
