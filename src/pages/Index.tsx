@@ -110,7 +110,7 @@ const Index = () => {
           <div className="max-w-5xl mx-auto text-center animate-fade-in">
             <Badge className="mb-6 bg-secondary text-secondary-foreground hover:bg-secondary/80 px-4 py-1.5 text-sm">
               <Icon name="Sparkles" size={14} className="mr-1.5" />
-              Образовательный проект · Победитель конференции НПК-2025
+              Образовательный проект
             </Badge>
 
             <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">
@@ -514,28 +514,151 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ЯРКИЙ ТЕСТОВЫЙ БЛОК */}
-        <div
-          style={{
-            padding: "30px",
-            background: "#ff0000",
-            color: "white",
-            fontSize: "24px",
-            textAlign: "center",
-            border: "5px solid yellow",
-            margin: "40px 0",
-            borderRadius: "20px",
-            maxWidth: "1200px",
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        >
-          <p
-            style={{ margin: 0, fontFamily: "sans-serif", fontWeight: "bold" }}
-          >
-            🟥 ЯРКИЙ ТЕСТОВЫЙ БЛОК! ДОЛЖНО БЫТЬ ВИДНО!
-          </p>
-        </div>
+        {/* Authors Section */}
+        <section className="container mx-auto px-4 py-16 pb-20">
+          <div className="text-center mb-12">
+            <Badge className="mb-4 bg-[#FF5500]/10 text-[#FF5500] border-[#FF5500]/30">
+              <Icon name="Users" size={14} className="mr-1.5" />
+              Авторы проекта
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold">
+              Кто создал «Азбуку промт-архитектора»
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+            {/* Кирилл Зверев */}
+            <div className="bg-white rounded-3xl shadow-xl border-2 border-primary/10 overflow-hidden hover:shadow-2xl transition-all hover:-translate-y-1">
+              <div className="relative h-80 overflow-hidden">
+                <img
+                  src="https://cdn.poehali.dev/files/7408d43c-c75f-4485-ac2e-b27e52fe9407.jpg"
+                  alt="Зверев Кирилл Александрович"
+                  className="w-full h-full object-cover object-top"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="bg-white/20 backdrop-blur-sm rounded-2xl px-4 py-2">
+                    <p className="text-white font-bold text-lg leading-tight">Зверев Кирилл Александрович</p>
+                    <p className="text-white/80 text-sm">18 лет · Автор проекта</p>
+                  </div>
+                </div>
+              </div>
+              <div className="p-6">
+                <p className="text-muted-foreground leading-relaxed mb-5">
+                  Автор образовательных и творческих проектов в сфере искусственного интеллекта, профориентации и драматургии, волонтёр платформы «Добро.рф».
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-sky-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Icon name="Send" size={15} className="text-sky-500" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-sm">Telegram-канал «Арт и Мы»</p>
+                      <p className="text-xs text-muted-foreground">Просветительский проект о культуре, науке и технологиях</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Icon name="Brain" size={15} className="text-purple-500" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-sm">«Архитектура мечты в соавторстве с нейросетью»</p>
+                      <p className="text-xs text-muted-foreground">Проект на стыке архитектуры и искусственного интеллекта</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-orange-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Icon name="BookOpen" size={15} className="text-orange-500" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-sm">Пьеса «Путь созидания без единого исключения»</p>
+                      <p className="text-xs text-muted-foreground">Социальная пьеса для подростков в 5 действиях, ~50 персонажей</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Icon name="Heart" size={15} className="text-green-500" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-sm">Волонтёрство и фонд «АРГО»</p>
+                      <p className="text-xs text-muted-foreground">Молодёжный куратор, помощник в разработке ИИ-продуктов для педагогов</p>
+                    </div>
+                  </div>
+                </div>
+                <a
+                  href="https://dobro.ru/volunteers/96438970/about"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 inline-flex items-center gap-2 text-sm text-primary font-medium hover:underline"
+                >
+                  <Icon name="ExternalLink" size={14} />
+                  Профиль на Добро.рф
+                </a>
+              </div>
+            </div>
+
+            {/* Лунева Лариса Владимировна */}
+            <div className="bg-white rounded-3xl shadow-xl border-2 border-[#FF5500]/10 overflow-hidden hover:shadow-2xl transition-all hover:-translate-y-1">
+              <div className="relative h-80 overflow-hidden">
+                <img
+                  src="https://cdn.poehali.dev/projects/15463ef1-a448-436f-a0f5-371d6186f364/bucket/e676bc86-7f66-4a42-9cda-518726cb3841.jpg"
+                  alt="Лунева Лариса Владимировна"
+                  className="w-full h-full object-cover object-top"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="bg-white/20 backdrop-blur-sm rounded-2xl px-4 py-2">
+                    <p className="text-white font-bold text-lg leading-tight">Лунева Лариса Владимировна</p>
+                    <p className="text-white/80 text-sm">Руководитель проекта</p>
+                  </div>
+                </div>
+              </div>
+              <div className="p-6">
+                <p className="text-muted-foreground leading-relaxed mb-5">
+                  Учитель черчения и изобразительного искусства, автор образовательных курсов и программ. Руководитель проекта «Азбука промт-архитектора».
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-[#FF5500]/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Icon name="GraduationCap" size={15} className="text-[#FF5500]" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-sm">Автор образовательных курсов</p>
+                      <p className="text-xs text-muted-foreground">Разработка учебных программ и методических материалов</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Icon name="Palette" size={15} className="text-blue-500" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-sm">Учитель черчения и ИЗО</p>
+                      <p className="text-xs text-muted-foreground">Многолетний опыт работы с молодёжью в творческой сфере</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Icon name="Star" size={15} className="text-indigo-500" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-sm">Научный руководитель</p>
+                      <p className="text-xs text-muted-foreground">Сопровождение и развитие проектов Зверева Кирилла Александровича</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-rose-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Icon name="BookMarked" size={15} className="text-rose-500" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-sm">Методология и педагогика ИИ</p>
+                      <p className="text-xs text-muted-foreground">Интеграция технологий ИИ в образовательный процесс</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </Layout>
   );

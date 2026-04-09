@@ -6,17 +6,17 @@ import Icon from "@/components/ui/icon";
 import Layout from "@/components/Layout";
 
 const achievements = [
-  { icon: "Trophy", title: "Победитель НПК-2025", desc: "Научно-практическая конференция школьников", color: "bg-yellow-100 text-yellow-700" },
   { icon: "Users", title: "500+ участников", desc: "Апробация в 12 школах Свердловской области", color: "bg-blue-100 text-blue-700" },
   { icon: "BookOpen", title: "60 профессий", desc: "С уникальными промтами для каждой", color: "bg-green-100 text-green-700" },
   { icon: "Factory", title: "Кейс ВСМПО", desc: "Региональный компонент с мировым заводом", color: "bg-orange-100 text-orange-700" },
+  { icon: "Star", title: "Образовательный проект", desc: "Открытый ресурс для школ по всей России", color: "bg-purple-100 text-purple-700" },
 ];
 
 const timeline = [
   { year: "Осень 2024", title: "Начало исследования", desc: "Кирилл Зверев начинает изучать промт-инжиниринг и его применение в профессиях" },
   { year: "Зима 2024", title: "Разработка азбуки", desc: "Создание 60 карточек профессий с уникальными промтами, кейс ВСМПО-АВИСМА" },
   { year: "Январь 2025", title: "Апробация", desc: "Тестирование материалов в 12 школах, 500+ учеников, анкетирование" },
-  { year: "Февраль 2025", title: "Победа на конференции", desc: "Проект занял призовое место на НПК-2025 в номинации «Информационные технологии»" },
+  { year: "Февраль 2025", title: "Публичное представление", desc: "Зверев Кирилл Александрович и руководитель Лунева Лариса Владимировна представили проект образовательному сообществу" },
   { year: "2025", title: "Публикация сайта", desc: "Все материалы становятся доступными бесплатно для школ по всей России" },
 ];
 
@@ -44,44 +44,75 @@ const About = () => {
           </div>
         </section>
 
-        {/* Author */}
+        {/* Authors */}
         <section className="container mx-auto px-4 py-8">
-          <div className="max-w-4xl mx-auto">
-            <Card className="border-2 overflow-hidden">
-              <CardContent className="p-0">
-                <div className="flex flex-col md:flex-row">
-                  {/* Photo placeholder */}
-                  <div className="w-full md:w-64 bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center py-12 md:py-0 flex-shrink-0">
-                    <div className="text-center text-white">
-                      <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <Icon name="User" size={48} className="text-white" />
-                      </div>
-                      <p className="font-bold text-lg">Кирилл Зверев</p>
-                      <p className="text-white/80 text-sm">Автор проекта</p>
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Кирилл Зверев */}
+              <Card className="border-2 overflow-hidden hover:shadow-xl transition-all">
+                <CardContent className="p-0">
+                  <div className="relative h-72 overflow-hidden">
+                    <img
+                      src="https://cdn.poehali.dev/files/7408d43c-c75f-4485-ac2e-b27e52fe9407.jpg"
+                      alt="Зверев Кирилл Александрович"
+                      className="w-full h-full object-cover object-top"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute bottom-4 left-4">
+                      <p className="text-white font-bold text-xl">Зверев Кирилл Александрович</p>
+                      <p className="text-white/80 text-sm">18 лет · Автор проекта</p>
                     </div>
                   </div>
-
-                  <div className="p-6 md:p-8 flex-1">
-                    <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">Автор и исследователь</Badge>
-                    <h2 className="text-2xl font-bold mb-4">Кирилл Зверев</h2>
-                    <p className="text-muted-foreground leading-relaxed mb-4">
-                      Ученик МАОУ СОШ №14 (г. Верхняя Салда, Свердловская область). 
-                      Интересуется искусственным интеллектом, программированием и тем, 
-                      как технологии меняют профессии будущего.
+                  <div className="p-6">
+                    <Badge className="mb-3 bg-primary/10 text-primary border-primary/20">Автор и исследователь</Badge>
+                    <p className="text-muted-foreground leading-relaxed mb-3">
+                      Автор образовательных и творческих проектов в сфере ИИ, профориентации и драматургии. Волонтёр платформы «Добро.рф».
                     </p>
-                    <p className="text-muted-foreground leading-relaxed mb-4">
-                      Идея «Азбуки» родилась из простого вопроса: «А как ИИ поможет мне, 
-                      когда я вырасту и найду работу?» Оказалось, что у каждой профессии — 
-                      свой язык общения с нейросетью.
+                    <p className="text-muted-foreground leading-relaxed mb-3">
+                      Создатель Telegram-канала «Арт и Мы», проекта «Архитектура мечты в соавторстве с нейросетью», автор социальной пьесы для подростков в 5 действиях (~50 персонажей).
                     </p>
                     <p className="text-muted-foreground leading-relaxed">
-                      Проект начался как исследовательская работа и вырос в образовательный 
-                      ресурс для 500+ школьников из 12 школ Свердловской области.
+                      Молодёжный куратор проектов фонда «АРГО» (гранты Президента РФ), помощник в разработке ИИ-продуктов для педагогов инклюзивных школ.
+                    </p>
+                    <a href="https://dobro.ru/volunteers/96438970/about" target="_blank" rel="noopener noreferrer"
+                      className="mt-4 inline-flex items-center gap-2 text-sm text-primary font-medium hover:underline">
+                      <Icon name="ExternalLink" size={14} />
+                      Профиль на Добро.рф
+                    </a>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Лунева Лариса Владимировна */}
+              <Card className="border-2 border-[#FF5500]/20 overflow-hidden hover:shadow-xl transition-all">
+                <CardContent className="p-0">
+                  <div className="relative h-72 overflow-hidden">
+                    <img
+                      src="https://cdn.poehali.dev/projects/15463ef1-a448-436f-a0f5-371d6186f364/bucket/e676bc86-7f66-4a42-9cda-518726cb3841.jpg"
+                      alt="Лунева Лариса Владимировна"
+                      className="w-full h-full object-cover object-top"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute bottom-4 left-4">
+                      <p className="text-white font-bold text-xl">Лунева Лариса Владимировна</p>
+                      <p className="text-white/80 text-sm">Руководитель проекта</p>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <Badge className="mb-3 bg-[#FF5500]/10 text-[#FF5500] border-[#FF5500]/20">Научный руководитель</Badge>
+                    <p className="text-muted-foreground leading-relaxed mb-3">
+                      Учитель черчения и изобразительного искусства, автор образовательных курсов и программ.
+                    </p>
+                    <p className="text-muted-foreground leading-relaxed mb-3">
+                      Руководитель проекта «Азбука промт-архитектора». Обеспечивает методическое сопровождение, педагогическую экспертизу и развитие образовательных материалов.
+                    </p>
+                    <p className="text-muted-foreground leading-relaxed">
+                      Поддерживает интеграцию технологий ИИ в учебный процесс, помогает школьникам и педагогам осваивать инструменты будущего.
                     </p>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </section>
 
