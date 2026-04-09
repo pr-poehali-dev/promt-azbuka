@@ -51,16 +51,16 @@ const About = () => {
               {/* Кирилл Зверев */}
               <Card className="border-2 overflow-hidden hover:shadow-xl transition-all">
                 <CardContent className="p-0">
-                  <div className="relative h-72 overflow-hidden">
+                  <div className="relative">
                     <img
-                      src="https://cdn.poehali.dev/files/7408d43c-c75f-4485-ac2e-b27e52fe9407.jpg"
+                      src="https://cdn.poehali.dev/projects/15463ef1-a448-436f-a0f5-371d6186f364/bucket/e676bc86-7f66-4a42-9cda-518726cb3841.jpg"
                       alt="Зверев Кирилл Александрович"
-                      className="w-full h-full object-cover object-top"
+                      className="w-full"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     <div className="absolute bottom-4 left-4">
                       <p className="text-white font-bold text-xl">Зверев Кирилл Александрович</p>
-                      <p className="text-white/80 text-sm">18 лет · Автор проекта</p>
+                      <p className="text-white/80 text-sm">Автор проекта</p>
                     </div>
                   </div>
                   <div className="p-6">
@@ -86,11 +86,11 @@ const About = () => {
               {/* Лунева Лариса Владимировна */}
               <Card className="border-2 border-[#FF5500]/20 overflow-hidden hover:shadow-xl transition-all">
                 <CardContent className="p-0">
-                  <div className="relative h-72 overflow-hidden">
+                  <div className="relative">
                     <img
-                      src="https://cdn.poehali.dev/projects/15463ef1-a448-436f-a0f5-371d6186f364/bucket/e676bc86-7f66-4a42-9cda-518726cb3841.jpg"
+                      src="https://cdn.poehali.dev/files/7408d43c-c75f-4485-ac2e-b27e52fe9407.jpg"
                       alt="Лунева Лариса Владимировна"
-                      className="w-full h-full object-cover object-top"
+                      className="w-full"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     <div className="absolute bottom-4 left-4">
