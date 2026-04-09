@@ -25,11 +25,33 @@ const stats = [
 
 const alphabetPreview = [
   { letter: "А", professions: ["Архитектор", "Аналитик данных"] },
-  { letter: "И", professions: ["Инженер-металлург", "IT-менеджер"] },
+  { letter: "Б", professions: ["Биотехнолог", "Блогер"] },
   { letter: "В", professions: ["Врач", "Видеопродюсер"] },
-  { letter: "П", professions: ["Программист", "Психолог"] },
+  { letter: "Г", professions: ["Геолог", "Графический дизайнер"] },
+  { letter: "Д", professions: ["Дизайнер", "Дата-инженер"] },
+  { letter: "Е", professions: ["Естествоиспытатель", "Еколог"] },
+  { letter: "Ж", professions: ["Журналист", "Жилищный инспектор"] },
+  { letter: "З", professions: ["Зоолог", "Звукорежиссёр"] },
+  { letter: "И", professions: ["Инженер-металлург", "IT-менеджер"] },
   { letter: "К", professions: ["Кибербезопасник", "Космический инженер"] },
+  { letter: "Л", professions: ["Логопед", "Логист"] },
   { letter: "М", professions: ["Маркетолог", "Менеджер проектов"] },
+  { letter: "Н", professions: ["Нейроинженер", "Нотариус"] },
+  { letter: "О", professions: ["Оператор дронов", "Онколог"] },
+  { letter: "П", professions: ["Программист", "Психолог"] },
+  { letter: "Р", professions: ["Робототехник", "Режиссёр"] },
+  { letter: "С", professions: ["Сценарист", "Социолог"] },
+  { letter: "Т", professions: ["Технолог пищевой промышленности", "Тренер"] },
+  { letter: "У", professions: ["Учитель", "Урбанист"] },
+  { letter: "Ф", professions: ["Физик", "Финансовый аналитик"] },
+  { letter: "Х", professions: ["Хирург", "Химик-технолог"] },
+  { letter: "Ц", professions: ["Цифровой художник", "Цифровой маркетолог"] },
+  { letter: "Ч", professions: ["Чиновник городского планирования", "Чат-бот разработчик"] },
+  { letter: "Ш", professions: ["Шеф-повар", "Шрифтовой дизайнер"] },
+  { letter: "Щ", professions: ["Щитовидной железы специалист", "Щёточник-реставратор"] },
+  { letter: "Э", professions: ["Эколог", "Экономист"] },
+  { letter: "Ю", professions: ["Юрист", "Юрисконсульт"] },
+  { letter: "Я", professions: ["Яхтенный капитан", "Языковой инженер"] },
 ];
 
 const useCountUp = (end: number, duration = 2000, start = false) => {
@@ -124,7 +146,7 @@ const Index = () => {
             </p>
 
             <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
-              60 профессий. 60 готовых промтов. 1 универсальный навык для
+              60+ профессий. 60+ готовых промтов. 1 универсальный навык для
               будущего.
             </p>
 
@@ -366,10 +388,8 @@ const Index = () => {
                 </Button>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                {alphabetPreview
-                  .slice(0, 4)
-                  .map(({ letter, professions: profs }) => (
+              <div className="grid grid-cols-3 gap-3">
+                {alphabetPreview.map(({ letter, professions: profs }) => (
                     <Link key={letter} to="/alphabet">
                       <Card className="hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer border-2 hover:border-primary/50">
                         <CardContent className="p-4">
@@ -377,7 +397,7 @@ const Index = () => {
                             {letter}
                           </div>
                           <div className="space-y-1">
-                            {profs.map((p) => (
+                            {profs.filter(p => p).map((p) => (
                               <div
                                 key={p}
                                 className="text-xs font-medium text-foreground/70 leading-tight"
@@ -399,14 +419,14 @@ const Index = () => {
         <div className="bg-[#FF5500] py-5 overflow-hidden relative">
           <div className="flex gap-8 animate-none whitespace-nowrap container mx-auto px-4">
             {[
-              "🚀 60 профессий",
-              "⚡ 60 готовых промтов",
+              "🚀 60+ профессий",
+              "⚡ 60+ готовых промтов",
               "🎯 Принцип 4К",
               "🤖 ИИ-навык будущего",
               "🏭 Кейс ВСМПО-АВИСМА",
               "📊 89% рост понимания",
-              "🚀 60 профессий",
-              "⚡ 60 готовых промтов",
+              "🚀 60+ профессий",
+              "⚡ 60+ готовых промтов",
               "🎯 Принцип 4К",
             ].map((item, i) => (
               <span key={i} className="text-white font-bold text-sm shrink-0">

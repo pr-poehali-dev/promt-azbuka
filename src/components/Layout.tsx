@@ -33,7 +33,7 @@ const Layout = ({ children }: LayoutProps) => {
             </div>
             <div className="hidden sm:block">
               <span className="font-bold text-lg text-primary leading-tight block">Азбука промт-архитектора</span>
-              <span className="text-xs text-muted-foreground leading-tight">60 профессий · 60 промтов</span>
+              <span className="text-xs text-muted-foreground leading-tight">60+ профессий · 60+ промтов</span>
             </div>
           </Link>
 
@@ -115,7 +115,7 @@ const Layout = ({ children }: LayoutProps) => {
               </div>
               <p className="text-gray-400 text-sm leading-relaxed mb-4">
                 Образовательный проект для школьников 14–18 лет. 
-                60 профессий будущего × промт-инжиниринг = новая грамотность.
+                60+ профессий будущего × промт-инжиниринг = новая грамотность.
               </p>
               <div className="flex gap-3">
                 <a
